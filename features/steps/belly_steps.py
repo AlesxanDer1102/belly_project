@@ -19,33 +19,51 @@ def convertir_palabra_a_numero(palabra):
 @given('que he comido {cukes:d} pepinos')
 def step_given_eaten_cukes(context, cukes):
     context.belly.comer(cukes)
+    @when('espero {time_description}')
+    def step_when_wait_time_description(context, time_description):
+        time_description = time_description.strip('"').lower()
+        time_description = time_description.replace(',', ' ')
+        time_description = time_description.replace(' y ', ' ')
+        time_description = time_description.strip()
 
-@when('espero {time_description}')
-def step_when_wait_time_description(context, time_description):
-    time_description = time_description.strip('"').lower()
-    time_description = time_description.replace('y', ' ')
-    time_description = time_description.strip()
-
-    # Manejar casos especiales como 'media hora'
-    if time_description == 'media hora':
-        total_time_in_hours = 0.5
-    else:
-        # Expresión regular para extraer horas y minutos
-        pattern = re.compile(r'(?:(\w+)\s*horas?)?\s*(?:(\w+)\s*minutos?)?')
-        match = pattern.match(time_description)
-
-        if match:
-            hours_word = match.group(1) or "0"
-            minutes_word = match.group(2) or "0"
-
-            hours = convertir_palabra_a_numero(hours_word)
-            minutes = convertir_palabra_a_numero(minutes_word)
-
-            total_time_in_hours = hours + (minutes / 60)
+        # Manejar casos especiales como 'media hora'
+        if time_description == 'media hora':
+            total_time_in_hours = 0.5
         else:
-            raise ValueError(f"No se pudo interpretar la descripción del tiempo: {time_description}")
+            # Expresión regular para extraer horas, minutos y segundos
+            pattern = re.compile(r'(?:(\w+|\d+)\s*horas?)?\s*(?:(\w+|\d+)\s*minutos?)?\s*(?:(\w+|\d+)\s*segundos?)?')
+            match = pattern.match(time_description)
 
-    context.belly.esperar(total_time_in_hours)
+            if match:
+                hours_word = match.group(1) or "0"
+                minutes_word = match.group(2) or "0"
+                seconds_word = match.group(3) or "0"
+
+                hours = convertir_palabra_a_numero(hours_word)
+                minutes = convertir_palabra_a_numero(minutes_word)
+                seconds = convertir_palabra_a_numero(seconds_word)
+
+                total_time_in_hours = hours + (minutes / 60) + (seconds / 3600)
+            else:
+                # Intentar interpretar como un valor numérico seguido de una unidad
+                pattern = re.compile(r'(\d+)\s*(horas?|minutos?|segundos?)')
+                match = pattern.match(time_description)
+                if match:
+                    value = int(match.group(1))
+                    unit = match.group(2)
+                    
+                    if unit.startswith('hora'):
+                        total_time_in_hours = value
+                    elif unit.startswith('minuto'):
+                        total_time_in_hours = value / 60
+                    elif unit.startswith('segundo'):
+                        total_time_in_hours = value / 3600
+                    else:
+                        raise ValueError(f"Unidad de tiempo desconocida: {unit}")
+                else:
+                    raise ValueError(f"No se pudo interpretar la descripción del tiempo: {time_description}")
+
+        context.belly.esperar(total_time_in_hours)
 
 @then('mi estómago debería gruñir')
 def step_then_belly_should_growl(context):
