@@ -1,0 +1,225 @@
+<testsuite name="belly.Característica del estómago" tests="13" errors="0" failures="0" skipped="2" time="0.591279" timestamp="2025-04-22T02:11:29.014200" hostname="LAPTOP-01GDP1PL"><testcase classname="belly.Característica del estómago" name="comer muchos pepinos y gruñir" status="passed" time="0.052338"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer muchos pepinos y gruñir
+    Dado que he comido 42 pepinos ... passed in 0.018s
+    Cuando espero 2 horas ... passed in 0.018s
+    Entonces mi estómago debería gruñir ... passed in 0.017s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 42.0 pepinos.
+He esperado 2.0 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer pocos pepinos y no gruñir" status="passed" time="0.055034"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer pocos pepinos y no gruñir
+    Dado que he comido 10 pepinos ... passed in 0.017s
+    Cuando espero 2 horas ... passed in 0.018s
+    Entonces mi estómago no debería gruñir ... passed in 0.020s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 10.0 pepinos.
+He esperado 2.0 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer muchos pepinos y esperar menos de una hora" status="passed" time="0.053466"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer muchos pepinos y esperar menos de una hora
+    Dado que he comido 50 pepinos ... passed in 0.017s
+    Cuando espero media hora ... passed in 0.019s
+    Entonces mi estómago no debería gruñir ... passed in 0.018s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 50.0 pepinos.
+He esperado 0.5 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer pepinos y esperar en minutos" status="passed" time="0.057423"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer pepinos y esperar en minutos
+    Dado que he comido 30 pepinos ... passed in 0.017s
+    Cuando espero 90 minutos ... passed in 0.020s
+    Entonces mi estómago debería gruñir ... passed in 0.020s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 30.0 pepinos.
+He esperado 1.5 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer pepinos y esperar en diferentes formatos" status="passed" time="0.051954"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer pepinos y esperar en diferentes formatos
+    Dado que he comido 25 pepinos ... passed in 0.016s
+    Cuando espero "dos horas y treinta minutos" ... passed in 0.018s
+    Entonces mi estómago debería gruñir ... passed in 0.017s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 25.0 pepinos.
+He esperado 2.5 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer pepinos y esperar en horas y minutos" status="passed" time="0.049886"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer pepinos y esperar en horas y minutos
+    Dado que he comido 40 pepinos ... passed in 0.015s
+    Cuando espero "1 hora y 30 minutos" ... passed in 0.018s
+    Entonces mi estómago debería gruñir ... passed in 0.017s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 40.0 pepinos.
+He esperado 1.5 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="comer pepinos y esperar en segundos" status="passed" time="0.053163"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: comer pepinos y esperar en segundos
+    Dado que he comido 35 pepinos ... passed in 0.017s
+    Cuando espero "6000 segundos" ... passed in 0.018s
+    Entonces mi estómago debería gruñir ... passed in 0.018s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 35.0 pepinos.
+He esperado 1.6666666666666667 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Comer pepinos y esperar en minutos y segundos" status="passed" time="0.051267"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: Comer pepinos y esperar en minutos y segundos
+    Dado que he comido 20 pepinos ... passed in 0.016s
+    Cuando espero "1 hora y 30 minutos y 45 segundos" ... passed in 0.018s
+    Entonces mi estómago debería gruñir ... passed in 0.017s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 20.0 pepinos.
+He esperado 1.5125 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Comer una cantidad fraccionaria de pepinos" status="passed" time="0.051016"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: Comer una cantidad fraccionaria de pepinos
+    Dado que he comido 0.5 pepinos ... passed in 0.017s
+    Cuando espero 2 horas ... passed in 0.016s
+    Entonces mi estómago no debería gruñir ... passed in 0.018s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 0.5 pepinos.
+He esperado 2.0 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Manejo de cantidad fraccionaria de pepinos" status="passed" time="0.050642"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: Manejo de cantidad fraccionaria de pepinos
+    Dado que he comido 10.5 pepinos ... passed in 0.017s
+    Cuando espero "90 minutos" ... passed in 0.017s
+    Entonces mi estómago debería gruñir ... passed in 0.017s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He comido 10.5 pepinos.
+He esperado 1.5 horas.
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Error con cantidad negativa de pepinos" status="passed" time="0.06509"><system-out>
+<![CDATA[
+@scenario.begin
+
+  @spanish
+  Escenario: Error con cantidad negativa de pepinos
+    Dado que he comido -2 pepinos ... passed in 0.027s
+    Cuando espero "2 horas" ... passed in 0.020s
+    Entonces debería recibir un error por cantidad negativa ... passed in 0.019s
+
+@scenario.end
+--------------------------------------------------------------------------------
+
+Captured stdout:
+He esperado 2.0 horas.
+✓ Error por cantidad negativa detectado correctamente: No se puede comer una cantidad negativa de pepinos
+
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Esperar usando horas en inglés" status="skipped" time="0"><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+
+  @english
+  Escenario: Esperar usando horas en inglés
+    Dado que he comido 20 pepinos ... skipped in 0.000s
+    Cuando espero "two hours and thirty minutes" ... skipped in 0.000s
+    Entonces mi estómago debería gruñir ... skipped in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase><testcase classname="belly.Característica del estómago" name="Esperando usando horas en ingles y mi estomago no deberia rugir" status="skipped" time="0"><skipped /><system-out>
+<![CDATA[
+@scenario.begin
+
+  @english
+  Escenario: Esperando usando horas en ingles y mi estomago no deberia rugir
+    Dado que he comido 30 pepinos ... skipped in 0.000s
+    Cuando espero "one hour" ... skipped in 0.000s
+    Entonces mi estómago no debería gruñir ... skipped in 0.000s
+
+@scenario.end
+--------------------------------------------------------------------------------
+]]>
+</system-out></testcase></testsuite>

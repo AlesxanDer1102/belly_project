@@ -20,6 +20,7 @@ class Belly:
 
     def esperar(self, tiempo_en_horas):
         if tiempo_en_horas > 0:
+            print(f"He esperado {tiempo_en_horas} horas.")
             self.tiempo_esperado += tiempo_en_horas
 
     def esta_gruñendo(self):

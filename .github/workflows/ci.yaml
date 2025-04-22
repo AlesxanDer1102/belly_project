@@ -11,10 +11,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.10"
 
@@ -27,15 +27,44 @@ jobs:
       - name: Run pytest
         run: |
           pytest  -v --strict-markers
-        
-      - name: Run behave
+
+      - name: Run behave español
+        id: behave-es
+        continue-on-error: true
         run: |
-          behave  --stop
+          behave --junit --junit-directory=test-reports --tags=spanish features/ -v
+
+      - name: Run behave ingles
+        id: behave_en
+        continue-on-error: true
+        run: |
+          behave --junit --junit-directory=test-reports --tags=english features/ -v
+
+      - name: Run behave (todas las pruebas)
+        id: behave_all
+        continue-on-error: true
+        run: |
+          behave --junit --junit-directory=test-reports features/ -v
 
       - name: Generate test reports
         if: always()
         run: |
           mkdir -p test-reports
+
+      - name: Check test results
+        if: always()
+        run: |
+          echo "Resultados de las pruebas:"
+          echo "- pytest: ${{ steps.pytest.outcome }}"
+          echo "- behave (español): ${{ steps.behave_es.outcome }}"
+          echo "- behave (inglés): ${{ steps.behave_en.outcome }}"
+          echo "- behave (todas): ${{ steps.behave_all.outcome }}"
+
+          # Falla el build si alguna prueba falló
+          if [[ "${{ steps.pytest.outcome }}" == "failure" || "${{ steps.behave_all.outcome }}" == "failure" ]]; then
+            echo "::error::Algunas pruebas han fallado"
+            exit 1
+          fi
 
       - name: Upload test results
         if: always()
