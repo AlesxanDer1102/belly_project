@@ -41,3 +41,18 @@ Característica: Característica del estómago
     Dado que he comido 20 pepinos
     Cuando espero "1 hora y 30 minutos y 45 segundos"
     Entonces mi estómago debería gruñir
+
+  Escenario: Comer una cantidad fraccionaria de pepinos
+    Dado que he comido 0.5 pepinos
+    Cuando espero 2 horas
+    Entonces mi estómago no debería gruñir
+
+  Escenario: Manejo de cantidad fraccionaria de pepinos
+    Dado que he comido 10.5 pepinos
+    Cuando espero "90 minutos"
+    Entonces mi estómago debería gruñir
+  
+  Escenario: Error con cantidad negativa de pepinos
+    Dado que he comido -2 pepinos
+    Cuando espero "2 horas"
+    Entonces debería recibir un error por cantidad negativa
