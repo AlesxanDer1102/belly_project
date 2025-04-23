@@ -1,8 +1,28 @@
 from src.belly import Belly
+import time
 
 def before_scenario(context, scenario):
-    context.belly = Belly()
+    # Inicializar el belly según si es un test de stress o no
+    if 'stress_test' in scenario.tags:
+        context.belly = Belly(modo_stress=True)
+    else:
+        context.belly = Belly()
+    
+    # Inicializar otras variables de contexto
     context.exception = None
+    context.execution_times = {}  # Para pruebas de rendimiento
+
+def before_step(context, step):
+    # Registrar el tiempo antes de cada paso
+    if step.step_type == "when" and step.name.startswith("espero"):
+        context.step_start_time = time.time()
+
+def after_step(context, step):
+    # Registrar el tiempo después del paso relevante
+    if step.step_type == "when" and step.name.startswith("espero"):
+        end_time = time.time()
+        context.execution_times['wait_step'] = end_time - context.step_start_time
+        print(f"Tiempo de espera procesado en: {context.execution_times['wait_step']:.6f} segundos")
 
 """
 # features/environment.py

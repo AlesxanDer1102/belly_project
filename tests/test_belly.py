@@ -1,4 +1,5 @@
 import pytest
+import time
 from src.belly import Belly
 
 def test_gruñir_si_comido_muchos_pepinos():
@@ -58,3 +59,23 @@ def test_cantidades_limite():
     with pytest.raises(ValueError) as excinfo:
         belly.comer(101)
     assert "100 pepinos" in str(excinfo.value)
+
+
+def test_rendimiento_grandes_cantidades():
+    """Prueba que el sistema maneja grandes cantidades de pepinos eficientemente"""
+    start_time = time.time()
+    
+    belly = Belly(modo_stress=True)
+    
+    # Probar con una cantidad grande
+    belly.comer(10000)
+    belly.esperar(50)
+    
+    # Verificar que funciona correctamente
+    assert belly.esta_gruñendo() is True
+    
+    # Verificar tiempo de ejecución
+    elapsed_time = time.time() - start_time
+    assert elapsed_time < 1, f"La prueba tardó {elapsed_time:.2f} segundos, demasiado tiempo"
+    
+    print(f"Prueba de rendimiento completada en {elapsed_time:.4f} segundos")

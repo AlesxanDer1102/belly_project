@@ -2,7 +2,7 @@ from behave import given, when, then
 import re
 import random
 import time
-
+from src.belly import Belly
 # Función para convertir palabras numéricas a números
 def convertir_palabra_a_numero(palabra, english=False):
     try:
@@ -82,6 +82,14 @@ def procesar_rango_tiempo(expresion, english=False):
     
     return None
 
+@given('que estoy en modo de prueba de escalabilidad')
+def step_given_stress_test_mode(context):
+    # Crear instancia de Belly con modo stress activado
+    context.belly = Belly(modo_stress=True)
+    # Inicializar variables para medir tiempo
+    context.start_time = None
+    context.end_time = None
+
 @given('que he comido {cukes} pepinos')
 def step_given_eaten_cukes(context, cukes):
     try:
@@ -92,6 +100,9 @@ def step_given_eaten_cukes(context, cukes):
 
 @when('espero {time_description}')
 def step_when_wait_time_description(context, time_description):
+    start_time = time.time()
+
+    context.start_time = time.time()
     time_description = time_description.strip('"').lower()
 
     english = False
@@ -180,6 +191,11 @@ def step_when_wait_time_description(context, time_description):
 
     context.belly.esperar(total_time_in_hours)
 
+    end_time = time.time()
+    elapsed = end_time - start_time
+    context.execution_times['wait_step'] = elapsed
+    print(f"Tiempo de espera procesado en: {elapsed:.6f} segundos")
+
 @then('mi estómago debería gruñir')
 def step_then_belly_should_growl(context):
     assert context.belly.esta_gruñendo(), "Se esperaba que el estómago gruñera, pero no lo hizo."
@@ -211,3 +227,12 @@ def step_then_should_receive_error_for_excessive(context):
     # Impresión explícita para el log de CI
     print(f"✓ Error por cantidad excesiva detectado correctamente: {context.exception}")
 
+@then('el sistema responde en menos de {seconds:d} segundos')
+def step_then_system_responds_within(context, seconds):
+    # Verificar que tenemos tiempos registrados
+    assert 'wait_step' in context.execution_times, "No se registraron tiempos de ejecución"
+    elapsed_time = context.execution_times['wait_step']
+    
+    # Verificar que no exceda el límite
+    assert elapsed_time < seconds, f"El sistema tardó {elapsed_time:.2f} segundos, más de los {seconds} segundos permitidos"
+    print(f"✅ Tiempo de ejecución: {elapsed_time:.4f} segundos")
