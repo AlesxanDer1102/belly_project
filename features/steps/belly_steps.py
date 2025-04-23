@@ -31,10 +31,7 @@ def convertir_palabra_a_numero(palabra, english=False):
 
 
 def procesar_rango_tiempo(expresion, english=False):
-    """
-    Procesa expresiones como "entre X y Y horas" o "between X and Y hours"
-    y devuelve un tiempo aleatorio dentro de ese rango
-    """
+
     if english:
         # Patrón para inglés: "between X and Y hours/minutes/seconds"
         pattern = re.compile(r'between\s+(\d+\.?\d*|\w+)\s+and\s+(\d+\.?\d*|\w+)\s+(hours?|minutes?|seconds?)', re.IGNORECASE)
@@ -77,10 +74,8 @@ def procesar_rango_tiempo(expresion, english=False):
             else:
                 raise ValueError(f"Unidad de tiempo desconocida: {unit}")
         
-        # Convertir a horas
         tiempo_en_horas = random_value * factor
         
-        # Imprimir el valor aleatorio generado para seguimiento
         print(f"Tiempo aleatorio generado: {random_value} {unit} = {tiempo_en_horas:.4f} horas")
         
         return tiempo_en_horas
@@ -208,3 +203,11 @@ def step_then_belly_may_growl(context):
         print("El estómago está gruñendo - el tiempo aleatorio fue suficiente")
     else:
         print("El estómago no está gruñendo - el tiempo aleatorio no fue suficiente")
+
+@then('debería recibir un error por cantidad excesiva')
+def step_then_should_receive_error_for_excessive(context):
+    assert context.exception is not None, "Se esperaba un error, pero no se recibió ninguno."
+    assert "100 pepinos" in str(context.exception), f"El error no es por cantidad excesiva: {context.exception}"
+    # Impresión explícita para el log de CI
+    print(f"✓ Error por cantidad excesiva detectado correctamente: {context.exception}")
+

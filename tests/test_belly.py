@@ -33,3 +33,28 @@ def test_validar_errores_siempre_detectados():
         pytest.fail("Se esperaba una excepción por valor negativo pero no ocurrió")
     except ValueError:
         pass
+
+def test_cantidad_excesiva_error():
+    """Prueba que se lanza un error cuando se intenta comer más de 100 pepinos"""
+    belly = Belly()
+    with pytest.raises(ValueError) as excinfo:
+        belly.comer(101)
+    assert "100 pepinos" in str(excinfo.value)
+    
+def test_cantidades_limite():
+    """Prueba comportamiento con valores límite"""
+    belly = Belly()
+    
+    # 100 pepinos es el máximo permitido (debe funcionar)
+    try:
+        belly.comer(100)
+    except ValueError:
+        pytest.fail("No debería fallar con exactamente 100 pepinos")
+    
+    # Reiniciar para probar el valor 101
+    belly.reset()
+    
+    # 101 pepinos debe lanzar error
+    with pytest.raises(ValueError) as excinfo:
+        belly.comer(101)
+    assert "100 pepinos" in str(excinfo.value)

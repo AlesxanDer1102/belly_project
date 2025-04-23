@@ -11,9 +11,14 @@ class Belly:
         self.tiempo_esperado = 0
 
     def comer(self, pepinos):
-        #Validar que la cantidad de que pepinos no sea negativo
+        # Comprobar que la cantidad de que pepinos no sea negativo
         if pepinos < 0:
             raise ValueError("No se puede comer una cantidad negativa de pepinos")
+        
+        # Comprobar que no sobrepase la cantidad permitida
+        if pepinos > 100:
+            raise ValueError("No se puede comer más de 100 pepinos, es peligroso para la salud")
+        
         
         print(f"He comido {pepinos} pepinos.")
         self.pepinos_comidos += pepinos

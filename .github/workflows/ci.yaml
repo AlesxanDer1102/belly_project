@@ -44,10 +44,7 @@ jobs:
         id: behave_random
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO PRUEBAS CON TIEMPOS ALEATORIOS ========="
-          # Establecer variable de entorno para usar una semilla fija en las pruebas
           export PYTHONHASHSEED=42
-          # Usar la etiqueta @random_time para ejecutar solo estas pruebas
           behave --junit --junit-directory=test-reports --tags=random_time features/ -v
 
       - name: Run behave (todas las pruebas)
@@ -55,6 +52,20 @@ jobs:
         continue-on-error: true
         run: |
           behave --junit --junit-directory=test-reports features/ -v
+      - name: Run behave (pruebas de validación)
+        id: behave_validacion
+        continue-on-error: true
+        run: |
+          behave --junit --junit-directory=test-reports --tags=validacion features/ -v
+          
+      - name: Verificar manejo de excepciones
+        run: |
+          if grep -q "Error por cantidad excesiva detectado correctamente" test-reports/TESTS-belly.xml; then
+            echo "✅ Las validaciones funcionan correctamente"
+          else
+            echo "❌ Las validaciones no están funcionando como se esperaba"
+            exit 1
+          fi
 
       - name: Generate test reports
         if: always()
