@@ -1,5 +1,7 @@
 from behave import given, when, then
 import re
+import random
+import time
 
 # Función para convertir palabras numéricas a números
 def convertir_palabra_a_numero(palabra, english=False):
@@ -28,6 +30,63 @@ def convertir_palabra_a_numero(palabra, english=False):
             return numeros_es.get(palabra.lower(), 0)
 
 
+def procesar_rango_tiempo(expresion, english=False):
+    """
+    Procesa expresiones como "entre X y Y horas" o "between X and Y hours"
+    y devuelve un tiempo aleatorio dentro de ese rango
+    """
+    if english:
+        # Patrón para inglés: "between X and Y hours/minutes/seconds"
+        pattern = re.compile(r'between\s+(\d+\.?\d*|\w+)\s+and\s+(\d+\.?\d*|\w+)\s+(hours?|minutes?|seconds?)', re.IGNORECASE)
+    else:
+        # Patrón para español: "entre X y Y horas/minutos/segundos"
+        pattern = re.compile(r'entre\s+(\d+\.?\d*|\w+)\s+y\s+(\d+\.?\d*|\w+)\s+(horas?|minutos?|segundos?)', re.IGNORECASE)
+    
+    match = pattern.match(expresion)
+    
+    if match:
+        # Extraer valores mínimo y máximo
+        min_value = match.group(1)
+        max_value = match.group(2)
+        unit = match.group(3).lower()
+        
+        # Convertir palabras a números si es necesario
+        min_num = convertir_palabra_a_numero(min_value, english)
+        max_num = convertir_palabra_a_numero(max_value, english)
+        
+        # Generar un valor aleatorio entre min y max
+        random_value = random.uniform(min_num, max_num)
+        
+        # Convertir a horas según la unidad
+        if english:
+            if unit.startswith('hour'):
+                factor = 1
+            elif unit.startswith('minute'):
+                factor = 1/60
+            elif unit.startswith('second'):
+                factor = 1/3600
+            else:
+                raise ValueError(f"Unknown time unit: {unit}")
+        else:
+            if unit.startswith('hora'):
+                factor = 1
+            elif unit.startswith('minuto'):
+                factor = 1/60
+            elif unit.startswith('segundo'):
+                factor = 1/3600
+            else:
+                raise ValueError(f"Unidad de tiempo desconocida: {unit}")
+        
+        # Convertir a horas
+        tiempo_en_horas = random_value * factor
+        
+        # Imprimir el valor aleatorio generado para seguimiento
+        print(f"Tiempo aleatorio generado: {random_value} {unit} = {tiempo_en_horas:.4f} horas")
+        
+        return tiempo_en_horas
+    
+    return None
+
 @given('que he comido {cukes} pepinos')
 def step_given_eaten_cukes(context, cukes):
     try:
@@ -49,7 +108,13 @@ def step_when_wait_time_description(context, time_description):
         english = True
         print("Detectado como inglés")
 
-
+    # Comprobar si es un rango de tiempo
+    if ("entre" in time_description or "between" in time_description):
+        tiempo_aleatorio = procesar_rango_tiempo(time_description, english)
+        if tiempo_aleatorio is not None:
+            context.belly.esperar(tiempo_aleatorio)
+            return
+    
     if english:
         time_description = time_description.replace(',', ' ')
         time_description = time_description.replace(' and ', ' ')
@@ -134,3 +199,12 @@ def step_then_should_receive_error(context):
     assert "negativa" in str(context.exception), f"El error no es por cantidad negativa: {context.exception}"
     # Impresión explícita para el log de CI
     print(f"✓ Error por cantidad negativa detectado correctamente: {context.exception}")
+
+@then('mi estómago puede gruñir o no dependiendo del tiempo aleatorio')
+def step_then_belly_may_growl(context):
+    # Esta verificación es diferente porque depende del tiempo aleatorio
+    # Simplemente imprimimos el estado para debugging y aceptamos el resultado
+    if context.belly.esta_gruñendo():
+        print("El estómago está gruñendo - el tiempo aleatorio fue suficiente")
+    else:
+        print("El estómago no está gruñendo - el tiempo aleatorio no fue suficiente")
