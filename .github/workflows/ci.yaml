@@ -34,22 +34,18 @@ jobs:
         id: behave_es
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO PRUEBAS EN ESPAÑOL ========="
           behave --junit --junit-directory=test-reports --tags=spanish features/ -v
 
       - name: Run behave (inglés)
         id: behave_en
         continue-on-error: true
         run: |
-          echo "========= RUNNING TESTS IN ENGLISH ========="
           behave --junit --junit-directory=test-reports --tags=english features/ -v
 
       - name: Run behave (tiempos aleatorios)
         id: behave_random
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO PRUEBAS CON TIEMPOS ALEATORIOS ========="
-          # Usar semilla fija para predictibilidad en pruebas con generación aleatoria
           export PYTHONHASHSEED=42 
           behave --junit --junit-directory=test-reports --tags=random_time features/ -v
 
@@ -57,21 +53,18 @@ jobs:
         id: behave_validacion
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO PRUEBAS DE VALIDACIÓN ========="
           behave --junit --junit-directory=test-reports --tags=validacion features/ -v
 
       - name: Run behave (pruebas de escalabilidad)
         id: behave_escalabilidad
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO PRUEBAS DE ESCALABILIDAD ========="
           /usr/bin/time -v behave --junit --junit-directory=test-reports --tags=stress_test features/ -v
 
       - name: Run behave (todas las pruebas)
         id: behave_all
         continue-on-error: true
         run: |
-          echo "========= EJECUTANDO TODAS LAS PRUEBAS ========="
           behave --junit --junit-directory=test-reports features/ -v
 
       - name: Verificar manejo de excepciones
